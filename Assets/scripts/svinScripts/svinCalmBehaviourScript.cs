@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
@@ -6,17 +7,18 @@ public class svinCalmBehaviourScript : svinDatascript
 {
     public GameObject testColumn;
     private Coroutine changeBehaviour;
+    private Coroutine raycastToSee;
     private float delay = 1f;
-    private WaitForSeconds waiter;
+    private WaitForSeconds wait1s;
     public int TemporaryTargetSpawnRadius = 75;
     private Vector3 CurrentTarget;
+    public bool playerInRange;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        waiter = new WaitForSeconds(delay);
+        wait1s = new WaitForSeconds(delay);
         walkAnimator = GetComponent<svinDatascript>().walkAnimator;
         rb = GetComponent<svinDatascript>().rb;
-        player = GetComponent<svinDatascript>().player;
         restingTimer = GetComponent<svinDatascript>().restingTimer;
         changeBehaviour = StartCoroutine(ChangeBehaviour(GetComponent<svinDatascript>().maxbehaveDelay));
     }
@@ -48,10 +50,18 @@ public class svinCalmBehaviourScript : svinDatascript
         {
             NormalBehaviourFixedUpdate();
         }
+        startRaycasting();
     }
-    
-    
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GameObject().tag == "player")
+        {
+            playerInRange = true;
+        }
+    }
+
+
     void NormalBehaviourUpdate()
     {
         replayAnimation();
@@ -69,7 +79,7 @@ public class svinCalmBehaviourScript : svinDatascript
     {
         while (rb != null)
         {
-            yield return waiter;
+            yield return wait1s;
             GetComponent<svinDatascript>().restingTimer -= 1;
             if (GetComponent<svinDatascript>().restingTimer <= 0)
             {
@@ -87,6 +97,22 @@ public class svinCalmBehaviourScript : svinDatascript
         }
     }
 
+    IEnumerator RaycastToSee()
+    {
+        Debug.Log("raycastToSee coroutine started");
+        Vector3 raypos = rb.transform.position;
+        raypos.y += 1;
+        Ray ray = new Ray(raypos, (GetComponent<svinDatascript>().player.position -rb.transform.position).normalized);
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log(hit.transform.gameObject.name + " was seen by svin from coroutine");
+            Instantiate(testColumn, hit.point, Quaternion.LookRotation(hit.normal));
+        }
+        yield return wait1s;
+        raycastToSee = null;
+    }
+
     protected Vector3 EstablishTempTarget(Rigidbody rb)
     {
         Vector3 targpos = rb.transform.position;
@@ -95,14 +121,16 @@ public class svinCalmBehaviourScript : svinDatascript
         targpos.x += change;
         change =ran.Next(-TemporaryTargetSpawnRadius, TemporaryTargetSpawnRadius);
         targpos.z += change;
-
-
-
-        Instantiate(testColumn, targpos, rb.transform.rotation );
-        Debug.Log("col spawned");
-        
-        
         return targpos;
+    }
+
+    void startRaycasting()
+    {
+        if (raycastToSee == null && playerInRange)
+        {
+            raycastToSee = StartCoroutine(RaycastToSee());
+
+        }
     }
 }
 

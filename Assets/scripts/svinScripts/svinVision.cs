@@ -19,8 +19,10 @@ public class svinVision : MonoBehaviour
     IEnumerator FlyCoroutine()
     {
         rotationFixed = false;
+        svinSeesYou = false;
         yield return new WaitForSeconds(4f);
         rotationFixed = true;
+        svinSeesYou = true;
         flyCoroutine = null;
     }
     private void OnTriggerEnter(Collider other)
