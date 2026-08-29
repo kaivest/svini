@@ -2,11 +2,15 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
+
+
 public class svinDatascript : MonoBehaviour
 {
+    public LayerMask jumpMask;
+    public customTrigger jumpTrigger;
     public Animator walkAnimator;
     public Rigidbody rb;
-    public int jumpStrength = 1;
+    public int jumpStrength = 100;
     private WaitForSeconds wait001 = new WaitForSeconds(0.01f);
     public Transform player;
     public float rotationSpeed = 0.01f;
@@ -17,21 +21,18 @@ public class svinDatascript : MonoBehaviour
     public bool svinSeesYou = false;
     public int restingTimer = 5;
 
+    void Awake()
+    {
+        
+    }
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("player").transform;
+        rb.gameObject.GetComponent<svinCalmBehaviourScript>().enabled = true;
         
     }
-
-    void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "floor"&&!resting)
-        {
-            Jump(jumpStrength);
-        }
-    }
-   
-    protected void Jump(int js)
+    
+    protected void Jump(int js, Rigidbody rb)
     {
        rb.AddForce(0,js,0, ForceMode.Impulse); 
     }

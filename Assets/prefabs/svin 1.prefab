@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4793835698634276869}
   - component: {fileID: 675727702157154131}
   - component: {fileID: 2885175130069819538}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: visionField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.25
+      value: 1.686
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -187,6 +187,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 872399384561634603}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6226097195281642466}
+    - targetCorrespondingSourceObject: {fileID: -8391222552659086748, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7022352913677282482}
   m_SourcePrefab: {fileID: 100100000, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
 --- !u!1 &5926295655151096392 stripped
 GameObject:
@@ -240,7 +246,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &2176739348359692327
 BoxCollider:
@@ -275,9 +281,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a3b1f69a95e4d389cf7688fb400b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::svinDatascript
+  jumpMask:
+    serializedVersion: 2
+    m_Bits: 1
+  jumpTrigger: {fileID: 7022352913677282482}
   walkAnimator: {fileID: 4483092259726520782}
   rb: {fileID: 4025944372387726299}
-  jumpStrength: 1
+  jumpStrength: 4
   player: {fileID: 0}
   rotationSpeed: 0.01
   svinSpeed: 4
@@ -285,7 +295,7 @@ MonoBehaviour:
   maxbehaveDelay: 15
   resting: 1
   svinSeesYou: 0
-  restingTimer: 5
+  restingTimer: 3
 --- !u!114 &872399384561634603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1744df83b0ed142d69732b6fe6ac092b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::svinCalmBehaviourScript
+  jumpMask:
+    serializedVersion: 2
+    m_Bits: 0
+  jumpTrigger: {fileID: 0}
   walkAnimator: {fileID: 0}
   rb: {fileID: 0}
   jumpStrength: 1
@@ -309,9 +323,47 @@ MonoBehaviour:
   resting: 1
   svinSeesYou: 0
   restingTimer: 0
-  testColumn: {fileID: 0}
+  testColumn: {fileID: 1408131677988511065, guid: eb4c633ac2ba94350bf552c904c4d9a0, type: 3}
   TemporaryTargetSpawnRadius: 75
-  playerInRange: 0
+--- !u!1 &6157375213789502845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
+  m_PrefabInstance: {fileID: 6845198403525537561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6226097195281642466
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6157375213789502845}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.009275448, y: 0.00948065, z: 0.00025123343}
+  m_Center: {x: -0.0001515247, y: -0.00021739957, z: -0.010529717}
+--- !u!114 &7022352913677282482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6157375213789502845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c857af970e5349789aff3426f916cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::customTrigger
+  isStay: 0
 --- !u!4 &6446268256264685810 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9c14ff400bceb446eb56da13be16145e, type: 3}
