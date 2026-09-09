@@ -257,8 +257,8 @@ GameObject:
   - component: {fileID: 7236525835106054078}
   - component: {fileID: 798270251977341460}
   - component: {fileID: 2149034556055353489}
-  - component: {fileID: 4628649220005830584}
-  m_Layer: 0
+  - component: {fileID: 8508231291804103010}
+  m_Layer: 6
   m_Name: wearpon
   m_TagString: wearpon
   m_Icon: {fileID: 0}
@@ -353,13 +353,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 5.124129, y: 1.1897484, z: 1.8349527}
   m_Center: {x: -0.023455635, y: 0.09487432, z: -0.13369903}
---- !u!114 &4628649220005830584
+--- !u!114 &8508231291804103010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,11 +368,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1946706516935856147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdb9e73f19566483ab70f84b459a3265, type: 3}
+  m_Script: {fileID: 11500000, guid: 6874cbd03d8cd4e70892ec3cd443e0da, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  damage: 8
-  knockback: 25
+  m_EditorClassIdentifier: Assembly-CSharp::wearponDataScript
+  damage: 100
 --- !u!1 &2862978374884394368
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,7 +486,7 @@ GameObject:
   - component: {fileID: 8085471532367835967}
   - component: {fileID: 6711025652763099059}
   - component: {fileID: 1583537179464473511}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: wearpon
   m_Icon: {fileID: 0}
@@ -732,6 +731,76 @@ Transform:
   - {fileID: 6118541448145469880}
   m_Father: {fileID: 7938587768331791195}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4207060959929281772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1588647653275038608}
+  - component: {fileID: 7941182450090668570}
+  - component: {fileID: 4641082088608957981}
+  m_Layer: 0
+  m_Name: jumpColliderHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1588647653275038608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207060959929281772}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 529847610920339567}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7941182450090668570
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207060959929281772}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.608088, y: 0.030011496, z: 0.92594856}
+  m_Center: {x: 0.08627248, y: -0.50285167, z: 0.025390297}
+--- !u!114 &4641082088608957981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207060959929281772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c857af970e5349789aff3426f916cdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::customTrigger
+  isStay: 0
+  Mask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &4735548181541976761
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,6 +981,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8068264334222367817}
+  - {fileID: 1588647653275038608}
   m_Father: {fileID: 7143623706925815450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4639756180297173269
@@ -1037,7 +1107,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &2739166697636865388
 MonoBehaviour:
@@ -1051,6 +1121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae50f99e5438d48f0907bc02e5168d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::playerMovementScript
+  healthpoints: 1000
+  damage: 10
+  player: {fileID: 0}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 1
+  jumpTrigger: {fileID: 4641082088608957981}
   head: {fileID: 1918862234975519062}
   headPosition: {fileID: 4735548181541976761}
   handAxis: {fileID: 7118695351590922844}
@@ -1073,9 +1150,10 @@ MonoBehaviour:
   movesRight: 0
   movesLeft: 0
   jumps: 0
+  canJump: 1
   strikes: 0
   PileStrikes: 0
-  isFlying: 0
+  isFlying: 1
   moves: 1
 --- !u!114 &1540258800565528514
 MonoBehaviour:
@@ -1103,7 +1181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b07902d8e8444a538ed4de15b7d1129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::healthScript
-  maxHealthpoints: 1000
   currentHP: 0
 --- !u!1 &7118695351590922844
 GameObject:
@@ -1287,7 +1364,7 @@ GameObject:
   - component: {fileID: 408239143761153251}
   - component: {fileID: 7126789354616631825}
   - component: {fileID: 5319378371350436799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: wearpon
   m_Icon: {fileID: 0}

@@ -5,8 +5,7 @@ using System.Collections;
 using Random = System.Random;
 public class svinCalmBehaviourScript :  svinDatascript
 {
-    
-    public GameObject testColumn;
+    //player
     private Coroutine changeBehaviour;
     private Coroutine raycastToSee;
     private float delay = 1f;
@@ -24,15 +23,85 @@ public class svinCalmBehaviourScript :  svinDatascript
 
     void Awake()
     {
-        GetComponent<svinDatascript>().jumpTrigger.OnStayed += JumpTriggerOnStay;
-        Debug.Log("Awake ");
-        
+        GetComponent<svinDatascript>().jumpTrigger.OnEntered += JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().visionTrigger.OnEntered += VisionTriggerOnEnter;
+        GetComponent<svinDatascript>().visionTrigger.OnExited += VisionTriggerOnExit;
     }
 
-    void JumpTriggerOnStay(Collider other)
+
+    
+    IEnumerator RaycastToSee()
+    {
+        while (GetComponent<svinDatascript>().playerInRange)
+        {
+            Vector3 raypos = rb.transform.position;
+            raypos.y += 1;
+            Ray ray = new Ray(raypos,
+                (GetComponent<svinDatascript>().player.position - rb.transform.position).normalized);
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log(hit.transform.gameObject.name + " was seen by " + rb.gameObject.name);
+                if (hit.transform.gameObject.tag == "player")
+                {
+                    rb.gameObject.AddComponent<svinAgroBehaviourScript>();
+                    Destroy(rb.gameObject.GetComponent<svinCalmBehaviourScript>());
+                    Debug.Log(rb.gameObject.name + " is now agressive");
+                }
+
+                //Instantiate(GetComponent<svinDatascript>().testColumn, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else
+            {
+                Debug.Log("svin saw nothing");
+            }
+
+            yield return wait1s;
+        }
+
+        raycastToSee = null;
+    }
+    void startRaycasting()
+    {
+        if (raycastToSee == null)
+        {
+            raycastToSee = StartCoroutine(RaycastToSee());
+        }
+    }
+    void VisionTriggerOnEnter(Collider other)
+    {
+        Debug.Log("player1");
+        if (enabled)
+        {
+            if (other.GameObject().CompareTag("player"))
+            {
+                Debug.Log("player2");
+                if (this.gameObject.GetComponent<svinDatascript>().player == null)
+                {Debug.Log("player3");
+                    this.gameObject.GetComponent<svinDatascript>().player =  other.gameObject.transform;
+                    Debug.Log("player4");
+                }
+                startRaycasting();
+                GetComponent<svinDatascript>().playerInRange = true;
+            }
+        }
+    }
+    void VisionTriggerOnExit(Collider other)
+    {
+        if (enabled)
+        {
+            if (other.GameObject().CompareTag("player"))
+            {
+                raycastToSee = null;
+                GetComponent<svinDatascript>().playerInRange = false;
+            }
+        }
+    }
+    
+    void JumpTriggerOnEnter(Collider other)
     {
 
-        if (!GetComponent<svinDatascript>().resting&& (GetComponent<svinDatascript>().jumpMask.value&(1<< other.gameObject.layer))!=0)
+        if (!GetComponent<svinDatascript>().resting)
         {
             Jump(GetComponent<svinDatascript>().jumpStrength, GetComponent<svinDatascript>().rb);
         }
@@ -58,30 +127,15 @@ public class svinCalmBehaviourScript :  svinDatascript
             NormalBehaviourFixedUpdate();
         }
     }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (enabled)
-        {
-            if (other.GameObject().tag == "player")
-            {
-                startRaycasting();
-                Debug.Log("svin raycasting");
-            }
-        }
-    }
     
-
     void NormalBehaviourUpdate()
     {
         replayAnimation();
-       
     }
     void NormalBehaviourFixedUpdate()
     {
-        fixRotation();
-        turnTowardsTarget(CurrentTarget);
-        MoveForward();
+        turnTowardsTarget(CurrentTarget, rb, GetComponent<svinDatascript>().rotationSpeed);
+        MoveForward(gameObject.GetComponent<svinDatascript>().svinSpeed, rb);
         replayAnimation();
     }
     
@@ -97,7 +151,6 @@ public class svinCalmBehaviourScript :  svinDatascript
                 GetComponent<svinDatascript>().resting = resting;
                 Random ranDelay = new Random();
                 GetComponent<svinDatascript>().restingTimer = ranDelay.Next(chance);
-                Debug.Log("behaviour of svin changed");
                 if (!resting)
                 {
                     Jump(GetComponent<svinDatascript>().jumpStrength,  GetComponent<svinDatascript>().rb);
@@ -106,34 +159,6 @@ public class svinCalmBehaviourScript :  svinDatascript
             }
         }
     }
-
-    IEnumerator RaycastToSee()
-    {
-        Debug.Log("raycasting tosee");
-        Vector3 raypos = rb.transform.position;
-        raypos.y += 1;
-        Ray ray = new Ray(raypos, (GetComponent<svinDatascript>().player.position -rb.transform.position).normalized);
-        RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(ray, out hit))
-        {
-            Debug.Log(hit.transform.gameObject.name + " was seen by "+rb.gameObject.name);
-            if (hit.transform.gameObject.tag == "player")
-            {
-                rb.gameObject.AddComponent<svinAgroBehaviourScript>();
-                Destroy(GetComponent<svinDatascript>().jumpTrigger.gameObject.GetComponent<customTrigger>());
-                Destroy(rb.gameObject.GetComponent<svinCalmBehaviourScript>());
-                Debug.Log(rb.gameObject.name+" is now agressive");
-            }
-            Instantiate(testColumn, hit.point, Quaternion.LookRotation(hit.normal));
-        }
-        else
-        {
-            Debug.Log("svin saw nothing");
-        }
-        yield return wait1s;
-        raycastToSee = null;
-    }
-
     protected Vector3 EstablishTempTarget(Rigidbody rb)
     {
         Vector3 targpos = rb.transform.position;
@@ -145,13 +170,12 @@ public class svinCalmBehaviourScript :  svinDatascript
         return targpos;
     }
 
-    void startRaycasting()
+
+    private void OnDestroy()
     {
-        if (raycastToSee == null)
-        {
-            raycastToSee = StartCoroutine(RaycastToSee());
-            Debug.Log(name + " raycasting coroutine must have started");
-        }
+        GetComponent<svinDatascript>().jumpTrigger.OnEntered-= JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().visionTrigger.OnEntered-= VisionTriggerOnEnter;
+        GetComponent<svinDatascript>().visionTrigger.OnExited-= VisionTriggerOnExit;
     }
 }
 

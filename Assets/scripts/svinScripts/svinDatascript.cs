@@ -1,35 +1,62 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 
-public class svinDatascript : MonoBehaviour
+public class svinDatascript : entityData
 {
+    public int saloCount;
+    public GameObject salo;
+    public GameObject testColumn;
     public LayerMask jumpMask;
+    public LayerMask visionMask;
     public customTrigger jumpTrigger;
+    public customTrigger visionTrigger;
+    public customTrigger damageTrigger;
     public Animator walkAnimator;
     public Rigidbody rb;
     public int jumpStrength = 100;
-    private WaitForSeconds wait001 = new WaitForSeconds(0.01f);
-    public Transform player;
+    public WaitForSeconds wait001 = new WaitForSeconds(0.01f);
     public float rotationSpeed = 0.01f;
+    public float agroRotationSpeed = 0.02f;
     public int svinSpeed = 5;
-    public int SvinAgroSpeed = 7;
+    public int svinAgroSpeed = 7;
     public int maxbehaveDelay=15;
     public bool resting = true;
     public bool svinSeesYou = false;
     public int restingTimer = 5;
+    public bool playerInRange = false;
 
     void Awake()
     {
-        
+        GetComponent<svinDatascript>().visionTrigger.Mask = GetComponent<svinDatascript>().visionMask;
+        GetComponent<svinDatascript>().jumpTrigger.Mask = GetComponent<svinDatascript>().jumpMask;
+        GetComponent<svinDatascript>().damageTrigger.Mask = EnemydamagerMask;
+        damageTrigger.OnEntered += OnDamageTriggerEntered;
+    }
+
+    void OnDamageTriggerEntered(Collider other)
+    {
+        Debug.Log("damage trigger worked");
+        if (other.gameObject.CompareTag("wearpon"))
+        {
+            healthpoints -= other.gameObject.GetComponent<wearponDataScript>().damage;
+        }
     }
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("player").transform;
-        rb.gameObject.GetComponent<svinCalmBehaviourScript>().enabled = true;
-        
+        Debug.Log("svinDatascript Start");
+
+            player = GameObject.FindGameObjectWithTag("player").transform;
+            if (player != null)
+            {
+                Debug.Log("player found");
+            }
+
+            
+
     }
     
     protected void Jump(int js, Rigidbody rb)
@@ -37,7 +64,7 @@ public class svinDatascript : MonoBehaviour
        rb.AddForce(0,js,0, ForceMode.Impulse); 
     }
 
-    protected void turnTowardsTarget(Vector3 targetPos)
+    protected void turnTowardsTarget(Vector3 targetPos, Rigidbody rb, float rotationSpeed)
     {
         Vector3 direction = (targetPos - rb.transform.position).normalized;
         direction.y = 0;
@@ -57,21 +84,18 @@ public class svinDatascript : MonoBehaviour
            Debug.Log("something played");
        }
     }
-    protected void fixRotation()
-    {
-        Quaternion rot = rb.transform.rotation;
-        rot.x = 0;
-        rot.z = 0;
-        rb.transform.rotation = rot;
-    }
 
-    protected void MoveForward()
+
+    protected void MoveForward(int speed, Rigidbody rb)
     {
         Vector3 pos = rb.transform.position;
         Vector3 forward = -rb.transform.right;
-        pos = forward*(svinSpeed*Time.deltaTime);
+        pos = forward*(speed*Time.deltaTime);
         rb.transform.position += pos;
     }
+
+
+    
 }
 
 

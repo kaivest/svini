@@ -4,9 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class playerMovementScript : MonoBehaviour
+public class playerMovementScript : entityData
 {
-    
+    [SerializeField] public LayerMask whatIsGround;
+    public customTrigger jumpTrigger;
     public GameObject head;
     public GameObject headPosition;
     public GameObject handAxis;
@@ -35,6 +36,7 @@ public class playerMovementScript : MonoBehaviour
     public bool movesRight = false;
     public bool movesLeft = false;
     public bool jumps = false;
+    public bool canJump = false;
     public bool strikes = false;
     public bool PileStrikes = false;
     public bool isFlying = false;
@@ -49,6 +51,11 @@ public class playerMovementScript : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
+        jumpTrigger.Mask = whatIsGround;
+    }
+    
     IEnumerator PileSwingCoroutine()
     {
         for (int i = 0; i < 10; i++)
@@ -194,7 +201,7 @@ public class playerMovementScript : MonoBehaviour
         {
             PileStrikes = true;
         }
-        if (Input.GetKeyDown("space")&&playerRB.transform.position.y <= 1.55f)
+        if (Input.GetKeyDown("space"))
         {
             jumps = true;
             isFlying = true;
@@ -239,10 +246,10 @@ public class playerMovementScript : MonoBehaviour
             movesLeft = false;
         }
 
-        if (jumps)
+        if (jumpTrigger.isStay&&jumps)
         {
-            playerRB.AddForce(0,jumpStrength,0,ForceMode.Impulse);
-            jumps = false;
+                playerRB.AddForce(0, jumpStrength, 0, ForceMode.Impulse);
+                jumps = false;
         }
 
         if (isFlying == false)
@@ -275,5 +282,11 @@ public class playerMovementScript : MonoBehaviour
 
         Quaternion viewRot = head.transform.rotation;
         handAxis.transform.rotation = viewRot;
+        canJump = jumpTrigger.isStay;
+        playerRB.gameObject.GetComponentInParent<Transform>().position = playerRB.gameObject.transform.position;
+        playerRB.gameObject.GetComponentInParent<Transform>().rotation = playerRB.gameObject.transform.rotation;
+        playerRB.angularVelocity = Vector3.zero;
+
     }
+    
 }

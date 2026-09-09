@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+
 
 public class customTrigger : MonoBehaviour
 {
@@ -6,21 +8,30 @@ public class customTrigger : MonoBehaviour
     public event System.Action<Collider> OnExited;
     public event System.Action<Collider> OnStayed;
     public bool isStay = false;
+    [SerializeField] public LayerMask Mask;
     void OnTriggerEnter(Collider other)
     {
+        if ((Mask.value & (1 << other.gameObject.layer)) != 0)
+        {
             OnEntered?.Invoke(other);
             isStay = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        OnExited?.Invoke(other);
-        isStay = false;
+        if ((Mask.value & (1 << other.gameObject.layer)) != 0)
+        {
+            OnExited?.Invoke(other);
+            isStay = false;
+        }
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        OnStayed?.Invoke(other);
-        Debug.Log(name + " stayed in contact with " + other.name);
-    }
+     void OnTriggerStay(Collider other)
+     {
+         if ((Mask.value & (1 << other.gameObject.layer)) != 0)
+         {
+             OnStayed?.Invoke(other);
+         }
+     }
 }
