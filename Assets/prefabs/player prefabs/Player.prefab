@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 7236525835106054078}
   - component: {fileID: 798270251977341460}
   - component: {fileID: 2149034556055353489}
-  - component: {fileID: 8508231291804103010}
+  - component: {fileID: 6539552288939187200}
   m_Layer: 6
   m_Name: wearpon
   m_TagString: wearpon
@@ -359,7 +359,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.124129, y: 1.1897484, z: 1.8349527}
   m_Center: {x: -0.023455635, y: 0.09487432, z: -0.13369903}
---- !u!114 &8508231291804103010
+--- !u!114 &6539552288939187200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -368,10 +368,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1946706516935856147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6874cbd03d8cd4e70892ec3cd443e0da, type: 3}
+  m_Script: {fileID: 11500000, guid: 858517631f38f4868b7f1b7a272a7c07, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::wearponDataScript
-  damage: 100
+  m_EditorClassIdentifier: Assembly-CSharp::shovelScript
+  damage: 10
+  hitbox: {fileID: 2149034556055353489}
+  speed: 0
+  combo1: 0
+  combo2: 0
+  combo3: 0
+  combo4: 0
+  combo5: 0
 --- !u!1 &2862978374884394368
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +492,6 @@ GameObject:
   - component: {fileID: 6346877340142521397}
   - component: {fileID: 8085471532367835967}
   - component: {fileID: 6711025652763099059}
-  - component: {fileID: 1583537179464473511}
   m_Layer: 6
   m_Name: Capsule
   m_TagString: wearpon
@@ -564,29 +570,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1583537179464473511
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3364824505847727160}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3438403780749486693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1107,9 @@ MonoBehaviour:
   healthpoints: 1000
   damage: 10
   player: {fileID: 0}
+  EnemydamagerMask:
+    serializedVersion: 2
+    m_Bits: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1
@@ -1363,7 +1349,6 @@ GameObject:
   - component: {fileID: 3947954390528426308}
   - component: {fileID: 408239143761153251}
   - component: {fileID: 7126789354616631825}
-  - component: {fileID: 5319378371350436799}
   m_Layer: 6
   m_Name: Cylinder
   m_TagString: wearpon
@@ -1442,29 +1427,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5319378371350436799
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8152947269469890600}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &8846020529315291435
 GameObject:
   m_ObjectHideFlags: 0

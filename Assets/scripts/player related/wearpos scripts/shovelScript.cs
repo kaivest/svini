@@ -1,8 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class wearponDataScript : MonoBehaviour
+public class shovelScript : wearponDataScript
 {
-    public int damage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,5 +13,10 @@ public class wearponDataScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void use()
+    {
+        Debug.Log("use");
     }
 }

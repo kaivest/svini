@@ -464,7 +464,6 @@ GameObject:
   - component: {fileID: 3104647600425936187}
   - component: {fileID: -6275684245249857992}
   - component: {fileID: -8633716008201682415}
-  - component: {fileID: 5620392957310762650}
   m_Layer: 0
   m_Name: svin
   m_TagString: svin
@@ -654,6 +653,10 @@ MonoBehaviour:
   rearAxis: {fileID: 8382183745592553430}
   jumpStrength: 1
   isJumping: 0
+  frontLegSpartRotation: {x: 0, y: 0, z: 0, w: 0}
+  frontLegTargetRotation: {x: 0, y: 0, z: 0, w: 0}
+  rearLegSpartRotation: {x: 0, y: 0, z: 0, w: 0}
+  rearLegTargetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &3104647600425936187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,7 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b07902d8e8444a538ed4de15b7d1129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::healthScript
-  maxHealthpoints: 40
   currentHP: 0
 --- !u!114 &-8633716008201682415
 MonoBehaviour:
@@ -696,18 +698,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   damage: 10
   knockback: 5
---- !u!114 &5620392957310762650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3406984684897126329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a3b1f69a95e4d389cf7688fb400b43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::svinDatascript
 --- !u!1 &3771016172746131984
 GameObject:
   m_ObjectHideFlags: 0

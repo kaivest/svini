@@ -7,6 +7,7 @@ using Random = System.Random;
 
 public class svinDatascript : entityData
 {
+    public Transform player;
     public int saloCount;
     public GameObject salo;
     public GameObject testColumn;
@@ -34,17 +35,9 @@ public class svinDatascript : entityData
         GetComponent<svinDatascript>().visionTrigger.Mask = GetComponent<svinDatascript>().visionMask;
         GetComponent<svinDatascript>().jumpTrigger.Mask = GetComponent<svinDatascript>().jumpMask;
         GetComponent<svinDatascript>().damageTrigger.Mask = EnemydamagerMask;
-        damageTrigger.OnEntered += OnDamageTriggerEntered;
     }
 
-    void OnDamageTriggerEntered(Collider other)
-    {
-        Debug.Log("damage trigger worked");
-        if (other.gameObject.CompareTag("wearpon"))
-        {
-            healthpoints -= other.gameObject.GetComponent<wearponDataScript>().damage;
-        }
-    }
+
     private void Start()
     {
         Debug.Log("svinDatascript Start");
@@ -94,6 +87,18 @@ public class svinDatascript : entityData
         rb.transform.position += pos;
     }
 
+    void reduceVelocity(Rigidbody rb)
+    {
+        if (rb.linearVelocity.magnitude > 4)
+        {
+            rb.linearVelocity *= 0.99f;
+        }
+    }
+
+    void Update()
+    {
+        reduceVelocity(rb);
+    }
 
     
 }

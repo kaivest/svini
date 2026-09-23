@@ -23,7 +23,7 @@ public class svinCalmBehaviourScript :  svinDatascript
 
     void Awake()
     {
-        GetComponent<svinDatascript>().jumpTrigger.OnEntered += JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().jumpTrigger.OnStayed += JumpTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnEntered += VisionTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnExited += VisionTriggerOnExit;
     }
@@ -36,8 +36,7 @@ public class svinCalmBehaviourScript :  svinDatascript
         {
             Vector3 raypos = rb.transform.position;
             raypos.y += 1;
-            Ray ray = new Ray(raypos,
-                (GetComponent<svinDatascript>().player.position - rb.transform.position).normalized);
+            Ray ray = new Ray(raypos, (GetComponent<svinDatascript>().player.position - rb.transform.position).normalized);
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(ray, out hit))
             {
@@ -73,12 +72,13 @@ public class svinCalmBehaviourScript :  svinDatascript
         Debug.Log("player1");
         if (enabled)
         {
+            Debug.Log("player2");
             if (other.GameObject().CompareTag("player"))
             {
                 Debug.Log("player2");
-                if (this.gameObject.GetComponent<svinDatascript>().player == null)
+                if (gameObject.GetComponent<svinDatascript>().player == null)
                 {Debug.Log("player3");
-                    this.gameObject.GetComponent<svinDatascript>().player =  other.gameObject.transform;
+                    gameObject.GetComponent<svinDatascript>().player =  other.gameObject.transform;
                     Debug.Log("player4");
                 }
                 startRaycasting();
@@ -173,7 +173,7 @@ public class svinCalmBehaviourScript :  svinDatascript
 
     private void OnDestroy()
     {
-        GetComponent<svinDatascript>().jumpTrigger.OnEntered-= JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().jumpTrigger.OnStayed -= JumpTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnEntered-= VisionTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnExited-= VisionTriggerOnExit;
     }

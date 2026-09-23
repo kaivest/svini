@@ -8,8 +8,8 @@ PhysicsMaterial:
   m_PrefabAsset: {fileID: 0}
   m_Name: Floor
   serializedVersion: 2
-  m_DynamicFriction: 104.1
-  m_StaticFriction: 8.92
+  m_DynamicFriction: 0
+  m_StaticFriction: 0
   m_Bounciness: 0.21
   m_FrictionCombine: 0
   m_BounceCombine: 0

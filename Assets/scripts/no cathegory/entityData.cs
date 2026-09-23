@@ -1,7 +1,12 @@
 using UnityEngine;
 
-public class particleDisappearScript : MonoBehaviour
+public class entityData : MonoBehaviour
 {
+    public int healthpoints;
+    public int damage;
+    public int knockback;
+    public int jumpForce;
+    [SerializeField]public LayerMask EnemydamagerMask;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

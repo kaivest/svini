@@ -12,7 +12,7 @@ public class svinAgroBehaviourScript : svinDatascript
     void Awake()
     {
         walkAnimator = GetComponent<svinDatascript>().walkAnimator;
-        GetComponent<svinDatascript>().jumpTrigger.OnEntered += JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().jumpTrigger.OnStayed += JumpTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnEntered += VisionTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnExited += VisionTriggerOnExit;
         Debug.Log(GetComponent<svinDatascript>().jumpTrigger.enabled + " is datascript jumptrigger status for "+ name);
@@ -106,7 +106,7 @@ public class svinAgroBehaviourScript : svinDatascript
 
     private void OnDestroy()
     {
-        GetComponent<svinDatascript>().jumpTrigger.OnEntered -= JumpTriggerOnEnter;
+        GetComponent<svinDatascript>().jumpTrigger.OnStayed -= JumpTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnEntered -= VisionTriggerOnEnter;
         GetComponent<svinDatascript>().visionTrigger.OnExited -= VisionTriggerOnExit;
     }
