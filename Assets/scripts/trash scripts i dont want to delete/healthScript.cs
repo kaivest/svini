@@ -26,7 +26,7 @@ public class healthScript : MonoBehaviour
         if (this.gameObject.GetComponent<entityData>().healthpoints <= 0)
         {
             Debug.Log(gameObject.name + " has been destroyed");
-            breakIntoParticles(gameObject.GetComponent<svinDatascript>().salo);
+            breakIntoParticles(gameObject.GetComponent<SvinDatascript>().salo);
             Destroy(gameObject);
             
         }
@@ -34,7 +34,7 @@ public class healthScript : MonoBehaviour
     }
     void breakIntoParticles(GameObject particle)
     {
-        for (int i = 0; i < gameObject.GetComponent<svinDatascript>().saloCount; i++)
+        for (int i = 0; i < gameObject.GetComponent<SvinDatascript>().saloCount; i++)
         {
             Random rand = new Random();
             int a =rand.Next(4);

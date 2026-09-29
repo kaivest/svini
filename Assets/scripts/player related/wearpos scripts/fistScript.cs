@@ -10,7 +10,6 @@ public class fistScript : wearponDataScript
     private Coroutine windowCoroutine = null;
     private Transform wearponPivoLocal;
     [SerializeField] private bool AttackCoroutineWorking = false;
-    private Collider col;
     public float currentDamageMultiplier = 1;
     public float baseDamageMultiplier = 1.2f;
     public float crossDistance= 10;
@@ -46,7 +45,7 @@ public class fistScript : wearponDataScript
         Debug.Log("fist combo 3");
         CloseCombo();
         Collider collid = CreateCollider(wearponPivoLocal);
-        PrepareCollider(ref collid,wearponPivoLocal,wearponPivoLocal.position, new Vector3(1,1,1),new Vector3(0,2,0));
+        PrepareCollider(ref collid,wearponPivoLocal,wearponPivoLocal.position, new Vector3(1,2,1),new Vector3(0,2,0));
         /*col.transform.position = wearponPivoLocal.transform.position;
         GameObject localPivo = new GameObject();
         localPivo.transform.position = wearponPivoLocal.transform.position;
@@ -77,7 +76,7 @@ public class fistScript : wearponDataScript
         Debug.Log("fist combo2");
         CloseCombo();
         Collider collid = CreateCollider(wearponPivoLocal);
-        PrepareCollider(ref collid,wearponPivoLocal,wearponPivoLocal.position, new Vector3(1,1,1),  new Vector3(-3,2,0));
+        PrepareCollider(ref collid,wearponPivoLocal,wearponPivoLocal.position, new Vector3(1,1,3),  new Vector3(-3,2,0));
             yield return Cross(crossDistance, speed, collid);
             while (comboWindowYielding)
             {
@@ -97,9 +96,8 @@ public class fistScript : wearponDataScript
         Vector3 pos =  wearponPivoLocal.transform.position;
         pos.y+= 0.7f;
         Collider collid = CreateCollider(wearponPivoLocal);
-        PrepareCollider(ref collid,wearponPivoLocal, pos, new Vector3(1,1,1), new Vector3(0,2,0));
+        PrepareCollider(ref collid,wearponPivoLocal, pos, new Vector3(1,1,3), new Vector3(0,2,0));
         yield return Cross(crossDistance, speed, collid);
-
         while (comboWindowYielding)
         {
             if (combo1Pressed)
@@ -120,6 +118,7 @@ public class fistScript : wearponDataScript
             //col.GetComponent<MeshRenderer>().enabled = false;
             attackCoroutine = StartCoroutine(Combo1Coroutine());
         }
+        
     }
     internal override void  Ability(ref Transform wearponPivo)
     {
@@ -133,15 +132,29 @@ public class fistScript : wearponDataScript
         localCol.transform.localPosition = pos;
         localCol.transform.rotation = wearponPivoLocal.rotation;
     }
-    private void RotateWearponAxis(Transform wearponPivo, int maxAngle, float deltaAngle,ref float currentAngle, Collider col )
+    
+    
+    
+    
+    private IEnumerator RotateWearponAxis(Transform wearponPivo, int angleX,int angleY,int angleZ, float deltaAngle)
     {
-        if (maxAngle >= currentAngle)
-        { 
-            currentAngle+= deltaAngle;
-            wearponPivo.rotation *= Quaternion.Euler(-deltaAngle,0,0);
-            col.transform.rotation = wearponPivo.rotation;
+        Vector3 delta = new Vector3(angleX, angleY, angleZ);
+        delta = delta.normalized;
+        delta *= 1*(float)speed/75;
+        while (true)
+        {
+            wearponPivo.rotation *= Quaternion.Euler(delta);
+            yield return Time.deltaTime;
         }
+        
     }
+    
+    
+    
+    
+    
+    
+    
     private IEnumerator OpenCloseComboWindow(float openYield, float closeYield)
     {
         yield return new WaitForSeconds(openYield);
@@ -160,6 +173,7 @@ public class fistScript : wearponDataScript
         float i = 0;
         while (i < distance)
         {
+            Debug.Log("fist cross yield");
                 FistForward(ref col, ref i, fistSpeed);
             yield return Time.deltaTime;
         }
@@ -175,22 +189,43 @@ public class fistScript : wearponDataScript
         localPivo.transform.SetParent(wearponPivoLocal.transform);
         col.transform.SetParent(localPivo.transform);
         float i = 0;
-        deltaAngle = speed * 0.01f*0.75f;
+        deltaAngle = distance/(fistSpeed)*speed*Time.deltaTime*320;
         float currentAngle = 0;
-        localPivo.transform.localRotation *= Quaternion.Euler(30, 0, 0);
+        localPivo.transform.localRotation *= Quaternion.Euler(60, 0, 0);
         windowCoroutine = StartCoroutine( OpenCloseComboWindow(distance/(fistSpeed*0.001f*50)*0.05f, distance/(fistSpeed*0.001f*50)));
+        Coroutine rotate = StartCoroutine( RotateWearponAxis(localPivo.transform, -1000,0,0 ,deltaAngle));
         while (i < distance)
         {
             float localSpeed = speed;
-            FistForward(ref col, ref i, localSpeed/1.7f);
-            RotateWearponAxis(localPivo.transform, 100, deltaAngle, ref currentAngle, col);
+            FistForward(ref col, ref i, localSpeed / 1.4f);
             yield return Time.deltaTime;
         }
+        StopCoroutine(rotate);
         Destroy(localPivo);
     }
     private IEnumerator Double()
     {
-        yield break;
+        GameObject localPivoLeft = new GameObject();
+        GameObject localPivoRight = new GameObject();
+        localPivoLeft.transform.SetParent(wearponPivoLocal.transform);
+        localPivoRight.transform.SetParent(wearponPivoLocal.transform);
+        localPivoLeft.transform.position = wearponPivoLocal.transform.parent.transform.position;
+        localPivoLeft.transform.position += Vector3.up;
+        localPivoRight.transform.position =  localPivoLeft.transform.position;
+        localPivoRight.transform.rotation *= Quaternion.Euler(0, 60, 0);
+        localPivoLeft.transform.rotation *= Quaternion.Euler(0, -60, 0);
+        Collider rightCol = CreateCollider(localPivoRight.transform);
+        Collider leftCol = CreateCollider(localPivoLeft.transform);
+        PrepareCollider(ref rightCol,localPivoRight.transform,localPivoRight.transform.position,new Vector3(1,3,1), new Vector3(0,0,5));
+        PrepareCollider(ref leftCol,localPivoLeft.transform,localPivoLeft.transform.position,new Vector3(1,3,1), new Vector3(0,0,5));
+        leftCol.transform.SetParent(localPivoLeft.transform);
+        rightCol.transform.SetParent(localPivoRight.transform);
+        int i = 0;
+        while (i < 60)
+        {
+            
+        }
+        yield return null;
     }
     private IEnumerator FinalCombo()
     {
